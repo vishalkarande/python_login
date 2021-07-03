@@ -1,0 +1,23 @@
+{% extends 'home.html' %}
+{% block title %} Home {% endblock %}
+{% block content %}
+<div class="container text-center">
+    <h1 class="text-danger" style="margin-top: 5%;">Register Page</h1>
+    <form action=" http://127.0.0.1:5000/user_register" method="POST" style="margin: 10%;">
+        <div class="form-group ">
+            <label for="staticEmail2" class="sr-only">Name</label>
+            <input class="form-control" placeholder="EG: Amit kumar" required style="width: 100%;" type="text"
+                name="name" placeholder="Name">
+            <label for="staticEmail2" style="margin-top:30px;" class="sr-only">Email</label>
+            <input class="form-control" placeholder="example@gmail.com" required style="width: 100%;" type="email"
+                name="email" placeholder="Email">
+            <label for="staticEmail2" style="margin-top:30px;" class="sr-only">Password</label>
+            <input class="form-control" placeholder="8 Digit password" required style="width: 100%;" type="password"
+                name="password" placeholder="Password">
+            <input type="submit" class="btn btn-success w-20 " style="margin-top:30px;" value="Register">
+            <p> <a href="{{url_for('login')}}">Login Now</a></p>
+        </div>
+</div>
+</form>
+</div>
+{% endblock %}
