@@ -9,7 +9,6 @@ app.register_blueprint(main, url_prefix="")
 app.secret_key = "super secret key"
 
 
-
 def login_check(f):
     @wraps(f)
     def decorated_function(*args, **kws):
@@ -18,7 +17,6 @@ def login_check(f):
         else:
             flash("Please Login", "info")
             return render_template('login.html')
-
     return decorated_function
 
 

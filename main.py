@@ -75,8 +75,7 @@ def user_register():
             return render_template('registration.html')
 
 
-# logout
-
+# logout API
 @main.route('/logout', methods=['POST', 'GET'])
 def logout():
     session.clear()
