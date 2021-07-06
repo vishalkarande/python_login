@@ -1,7 +1,11 @@
 from flask import Flask, render_template, url_for, session, request, flash, redirect
 import mysql.connector
+from functools import wraps
+from main import main
+
 
 app = Flask(__name__)
+app.register_blueprint(main, url_prefix="")
 # secret key
 app.secret_key = "super secret key"
 # connect to test database with table login
@@ -13,107 +17,51 @@ mydb = mysql.connector.connect(
 )
 mycursor = mydb.cursor()
 
-# created dummy home route
-# @app.route('/')
-# def home():
-#     return render_template('home.html')
 
-# login route
+def login_check(f):
+    @wraps(f)
+    def decorated_function(*args, **kws):
+        if 'email' in session:
+            return render_template('test.html')
+        else:
+            flash("Please Login", "info")
+            return render_template('login.html')
+
+    return decorated_function
+
+
+def login_check_R(f):
+    @wraps(f)
+    def decorated_function(*args, **kws):
+        if 'email' in session:
+            return render_template('test.html')
+        else:
+            return render_template('registration.html')
+
+    return decorated_function
 
 
 @app.route('/')
+@login_check
 def login():
-    if 'email' not in session:
-        return render_template('login.html')
-    else:
-        return render_template('test.html')
-
-# login API
-
-
-@app.route('/loginuser', methods=['POST', 'GET'])
-def result():
-    # mydb = mysql.connector.connect(
-    #     host="localhost",
-    #     user="root",
-    #     password="",
-    #     database="test"
-    # )
-    # mycursor = mydb.cursor()
-    try:
-        if request.method == 'POST':
-            count = 0
-            signup = request.form
-            username = signup['name']
-            password = signup['password']
-            if not len(password) >= 8:
-                flash("Password must be atleast 8 Characters", "danger")
-                return render_template('login.html')
-            mycursor.execute("select * from login where email= '" +
-                             username+"' and password='"+password+"'")
-            r = mycursor.fetchall()
-            print(r)
-            p = r[0]
-            count = mycursor.rowcount
-            print(count)
-            if count == 1:
-                session["name"] = p[1]
-                session["email"] = p[2]
-                print(session)
-                return render_template('test.html')
-            elif count > 1:
-                flash("Multiple Users", "danger")
-                return render_template('login.html')
-            else:
-                flash("Not able to Login", "danger")
-                return render_template('login.html')
-        mydb.commit()
-        mycursor.close()
-    except Exception as error:
-        print(error)
-        flash("Error Occoured, Check Id and Password", "danger")
-        return render_template('login.html')
-
-# registration Route
+    return render_template('login.html')
 
 
 @app.route('/register')
+@login_check_R
 def register():
-    if 'email' not in session:
-        return render_template('registration.html')
-    else:
-        return render_template('test.html')
-
-# registration API
+    return render_template('registration.html')
 
 
-@app.route('/user_register', methods=['POST', 'GET'])
-def user_register():
-    if request.method == 'POST':
-        try:
-            name = request.form['name']
-            email = request.form['email']
-            password = request.form['password']
-            if not len(password) >= 8:
-                flash("Password must be atleast 8 Characters", "danger")
-                return render_template('registration.html')
-            mycursor.execute(
-                "INSERT INTO login (name, email, password) VALUES (%s,%s,%s)", (name, email, password))
-            mydb.commit()
-            # mycursor.close()
-            flash("Registration success", "success")
-            return render_template('login.html')
-        except Exception as error:
-            flash("Error Occoured,please try later", "danger")
-            return render_template('registration.html')
-
-# Logout API
+@app.route('/test')
+@login_check
+def test():
+    return render_template('test.html')
 
 
-@app.route('/logout', methods=['POST', 'GET'])
-def logout():
-    session.clear()
-    return render_template('login.html')
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template("error_pages/404.html"), 404
 
 
 if __name__ == '__main__':
