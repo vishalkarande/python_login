@@ -3,19 +3,11 @@ import mysql.connector
 from functools import wraps
 from main import main
 
-
 app = Flask(__name__)
 app.register_blueprint(main, url_prefix="")
 # secret key
 app.secret_key = "super secret key"
-# connect to test database with table login
-mydb = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="",
-    database="test"
-)
-mycursor = mydb.cursor()
+
 
 
 def login_check(f):

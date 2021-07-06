@@ -67,7 +67,7 @@ def user_register():
             mycursor.execute(
                 "INSERT INTO login (name, email, password) VALUES (%s,%s,%s)", (name, email, password))
             mydb.commit()
-            # mycursor.close()
+
             flash("Registration success", "success")
             return render_template('login.html')
         except Exception as error:
