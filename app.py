@@ -31,6 +31,36 @@ def login_check_R(f):
     return decorated_function
 
 
+def getdata():
+    mydb = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="",
+        database="test"
+    )
+    mycursor = mydb.cursor()
+    mycursor.execute("select * from login")
+    r = mycursor.fetchall()
+    return r
+
+
+def admincheck(f):
+    @wraps(f)
+    def decorated_function(*args, **kws):
+        print(session['level'])
+        level = 'user'
+        if session['level'] == "admin":
+            level = session['level']
+            data = getdata()
+            return f(level, data, *args, **kws)
+
+        else:
+            level = session['level']
+            data = getdata()
+            return f(level, data, *args, **kws)
+    return decorated_function
+
+
 @app.route('/')
 @login_check
 def login():
@@ -44,14 +74,9 @@ def register():
 
 
 @app.route('/test')
-@login_check
-def test():
-    return render_template('test.html')
-
-
-@app.errorhandler(404)
-def page_not_found(e):
-    return render_template("error_pages/404.html"), 404
+@admincheck
+def test(level, data):
+    return render_template('test.html', level=level, data=data)
 
 
 if __name__ == '__main__':

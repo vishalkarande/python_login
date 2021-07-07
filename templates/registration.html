@@ -1,22 +1,28 @@
 {% extends 'home.html' %}
 {% block title %} Home {% endblock %}
 {% block content %}
-<div class="container text-center">
-    <h1 class="text-danger" style="margin-top: 5%;">Register Page</h1>
-    <form action=" http://127.0.0.1:5000/user_register" method="POST" style="margin: 10%;">
+<div class="container align-content-center text-center main-div">
+    <div class="main-class shadow-lg p-3 mb-5 bg-body rounded">
+        <img
+      src="https://www.vippng.com/png/full/50-505367_clipart-pen-wing-writing-pen-clip-art-transparent.png"
+      class="image"
+    />
+    <h5 class="text-danger text-center " style="margin-top: 5%;">REGISTER</h5>
+    <form action=" http://127.0.0.1:5000/user_register" method="POST" style="margin-left: 10%; margin-right: 10%">
         <div class="form-group ">
-            <label for="staticEmail2" class="sr-only">Name</label>
-            <input class="form-control" placeholder="EG: Amit kumar" required style="width: 100%;" type="text"
+            <label for="staticEmail2" class="sr-only lable">Name</label>
+            <input class="form-control username" placeholder="EG: Amit kumar" required style="width: 100%;" type="text"
                 name="name" placeholder="Name">
-            <label for="staticEmail2" style="margin-top:30px;" class="sr-only">Email</label>
-            <input class="form-control" placeholder="example@gmail.com" required style="width: 100%;" type="email"
+            <label for="staticEmail2" style="margin-top:30px;" class="sr-only lable">Email</label>
+            <input class="form-control username" placeholder="example@gmail.com" required style="width: 100%;" type="email"
                 name="email" placeholder="Email">
-            <label for="staticEmail2" style="margin-top:30px;" class="sr-only">Password</label>
-            <input class="form-control" placeholder="8 Digit password" required style="width: 100%;" type="password"
+            <label for="staticEmail2" style="margin-top:30px;" class="sr-only lable">Password</label>
+            <input class="form-control username" placeholder="8 Digit password" required style="width: 100%;" type="password"
                 name="password" placeholder="Password">
-            <input type="submit" class="btn btn-success w-20 " style="margin-top:30px;" value="Register">
-            <p> <a href="{{url_for('login')}}">Login Now</a></p>
+            <input type="submit" class="login btn-success w-20 " style="margin-top:30px;" value="REGISTER">
+           <a href="{{url_for('login')}}"><input type="button" class="register btn-info" value="LOGIN"></a>
         </div>
+    </div>
 </div>
 </form>
 </div>

@@ -1,0 +1,99 @@
+body {
+  background: #f3f3f3;
+  font-family: "Roboto", sans-serif;
+}
+h5 {
+  color: tomato;
+  text-shadow: 2px 2px violet;
+  font-weight: 600;
+}
+@media (min-width: 692px) {
+  .main-class {
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: 5%;
+
+    border-radius: 2%;
+  }
+  .image {
+    max-height: 20%;
+    max-width: 20%;
+  }
+}
+
+@media (max-width: 576px) {
+  .main-class {
+    margin-left: 0%;
+    margin-right: 0%;
+    margin-top: 10%;
+    background-color: white;
+    border-radius: 2%;
+  }
+  .image {
+    max-height: 30%;
+    max-width: 30%;
+  }
+}
+.login {
+  font-weight: bold;
+  width: 230px;
+
+  height: 45px;
+  padding: 6px 15px;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  background: #ee9ba3;
+  color: white;
+  font-size: 14px;
+}
+.btn1 {
+  font-weight: bold;
+  width: 230px;
+
+  height: 45px;
+  padding: 6px 15px;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  background: #1776f1;
+  color: white;
+  font-size: 14px;
+}
+.register {
+  font-weight: bold;
+  width: 230px;
+
+  height: 45px;
+  padding: 6px 15px;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  background: #7ee7f5;
+  color: white;
+  font-size: 14px;
+}
+.username {
+  font-weight: bold;
+  width: 200px;
+
+  height: 35px;
+  padding: 6px 15px;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  background: #f6f7f9;
+  color: #748194;
+  font-size: 14px;
+}
+.lable {
+  font-weight: 700;
+  float: left;
+  font-size: larger;
+  margin: 10px;
+}
+.link {
+  font-size: 15px;
+  color: tomato;
+  margin-top: 10px;
+}

@@ -1,6 +1,8 @@
 from flask import Blueprint, render_template
 from flask import Flask, render_template, url_for, session, request, flash, redirect
+import flask
 import mysql.connector
+
 main = Blueprint("main", __name__)
 
 # connect to test database with table login
@@ -29,15 +31,17 @@ def result():
             mycursor.execute("select * from login where email= '" +
                              username+"' and password='"+password+"'")
             r = mycursor.fetchall()
-            print(r)
             p = r[0]
             count = mycursor.rowcount
-            print(count)
+
             if count == 1:
                 session["name"] = p[1]
                 session["email"] = p[2]
-                print(session)
-                return render_template('test.html')
+                session["level"] = p[4]
+                session["userid"] = p[0]
+                session["check"] = p
+
+                return redirect(url_for("test"))
             elif count > 1:
                 flash("Multiple Users", "danger")
                 return render_template('login.html')
@@ -47,7 +51,6 @@ def result():
         mydb.commit()
         mycursor.close()
     except Exception as error:
-        print(error)
         flash("Error Occoured, Check Id and Password", "danger")
         return render_template('login.html')
 
@@ -61,6 +64,7 @@ def user_register():
             name = request.form['name']
             email = request.form['email']
             password = request.form['password']
+
             if not len(password) >= 8:
                 flash("Password must be atleast 8 Characters", "danger")
                 return render_template('registration.html')
@@ -74,6 +78,47 @@ def user_register():
             flash("Error Occoured,please try later", "danger")
             return render_template('registration.html')
 
+
+@main.route('/delete/<int:id>', methods=['POST', 'GET'])
+def delete(id):
+    try:
+        print(type(id))
+        mycursor.execute(
+            "DELETE FROM `login` WHERE id='%d'" % id)
+        mydb.commit()
+        flash("Data Deleted", "danger")
+        return redirect(url_for("test"))
+    except Exception as error:
+        print(error)
+        flash("Error Occoured,please try later", "danger")
+        return redirect(url_for("test"))
+
+
+@main.route('/edit/<int:id>', methods=['POST', 'GET'])
+def edit(id):
+    mycursor.execute("select * from login where id='%d'" % id)
+    r = mycursor.fetchall()
+    print(r[0])
+    return render_template('edit.html', data=r[0])
+
+
+@main.route('/update', methods=['POST', 'GET'])
+def update():
+    if request.method == 'POST':
+        try:
+            id = request.form['id']
+            name = request.form['name']
+            email = request.form['email']
+            user = request.form['user']
+            mycursor.execute(
+                "UPDATE login SET name=%s,email=%s,type=%s WHERE id=%s", (name, email, user, id))
+            mydb.commit()
+            flash("Updated Successfully", "success")
+            return redirect(url_for("test"))
+        except Exception as error:
+            print(error)
+            flash("Error Occoured,please try later", "danger")
+            return redirect(url_for("test"))
 
 # logout API
 @main.route('/logout', methods=['POST', 'GET'])

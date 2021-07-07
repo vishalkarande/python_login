@@ -1,0 +1,35 @@
+{% extends 'home.html' %}
+{% block title %} Home {% endblock %}
+{% block content %}
+<div class="container align-content-center text-center main-div">
+    <div class="main-class shadow-lg p-3 mb-5 bg-body rounded">
+        <img
+      src="https://www.vippng.com/png/full/50-505367_clipart-pen-wing-writing-pen-clip-art-transparent.png"
+      class="image"
+    />
+    <h5 class="text-danger text-center " style="margin-top: 5%;">Edit Data</h5>
+    <form action=" http://127.0.0.1:5000/update" method="POST" style="margin-left: 10%; margin-right: 10%">
+        <div class="form-group ">
+            <input type="hidden" value="{{ data[0] }}" name="id">
+            <label for="staticEmail2" class="sr-only lable">Name</label>
+            <input class="form-control username" value="{{ data[1] }}" required style="width: 100%;" type="text"
+                name="name" >
+            <label for="staticEmail2" style="margin-top:30px;" class="sr-only lable">Email</label>
+            <input class="form-control username"  value="{{ data[2] }}" required style="width: 100%;" type="email"
+                name="email" >
+            <label for="staticEmail2" style="margin-top:30px;" class="sr-only lable">User access</label>
+            {% if session["level"] == "admin" :%}
+            <input class="form-control username"  value="{{ data[4] }}" required style="width: 100%;" type="text"
+                name="user" >
+            {% else: %}
+            <input class="form-control username" disabled  value="{{ data[4] }}" required style="width: 100%;" type="text"
+                name="user" >
+            {% endif %}
+            <input type="submit" class="login btn-success w-20 " style="margin-top:30px;" value="UPDATE">
+           <a href="{{url_for('test')}}"><input type="button" class="register btn-info" value="CANCEL"></a>
+        </div>
+    </div>
+</div>
+</form>
+</div>
+{% endblock %}
