@@ -13,7 +13,7 @@ def login_check(f):
     @wraps(f)
     def decorated_function(*args, **kws):
         if 'email' in session:
-            return render_template('test.html')
+            return redirect(url_for("test"))
         else:
             flash("Please Login", "info")
             return render_template('login.html')

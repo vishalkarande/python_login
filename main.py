@@ -51,6 +51,7 @@ def result():
         mydb.commit()
         mycursor.close()
     except Exception as error:
+        print(error)
         flash("Error Occoured, Check Id and Password", "danger")
         return render_template('login.html')
 

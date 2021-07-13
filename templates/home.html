@@ -16,6 +16,15 @@
       href="{{ url_for('static',filename='styles/main.css') }}"
     />
 
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static',filename='styles/style.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
     <title>{% block title %} {% endblock %}</title>
   </head>
 
@@ -80,6 +89,7 @@
     </section>
 
     {% block content %} {% endblock %}
+    <script src="{{url_for('static', filename='styles/jquery.min.js')}}"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
       integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
@@ -90,5 +100,6 @@
       integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
       crossorigin="anonymous"
     ></script>
+    <script src="{{url_for('static', filename='styles/main.js')}}"></script>
   </body>
 </html>

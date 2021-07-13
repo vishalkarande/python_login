@@ -1,6 +1,7 @@
 {% extends 'home.html' %} {% block title %} Home {% endblock %} {% block content
-%}
-<section style="margin-left: 5%; margin-right: 5%">
+%} {% include 'test2.html' %}
+
+<div class="container" style="margin-left: 5%; margin-right: 5%">
   <h4 style="margin-top: 10px; color: royalblue">
     Hi {{ session['name'] }}, your access right is {{level}}
   </h4>
@@ -73,4 +74,5 @@
     </tbody>
   </table>
 </section>
+</div>
 {% endblock %}
