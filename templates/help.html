@@ -1,0 +1,16 @@
+{% extends 'home.html' %} {% block title %} Home {% endblock %} {% block content
+    %} {% include 'test2.html' %}
+    <div class="container" style="margin-left: 5%; margin-right: 5% " >
+      <h4 style="margin-top: 10px; color: royalblue">
+        Hi {{ session['name'] }}, your access right is {{level}}
+      </h4>
+      <h6 style="margin-top: 10px; color: red">
+        * only Admin can delete Users and Edit access level
+      </h6>
+      <h1>help page</h1>
+      
+    </section>
+    </div>
+    </div>
+    {% endblock %}
+    

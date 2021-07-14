@@ -2,6 +2,8 @@ from flask import Blueprint, render_template
 from flask import Flask, render_template, url_for, session, request, flash, redirect
 import flask
 import mysql.connector
+from functools import wraps
+import json
 
 main = Blueprint("main", __name__)
 
@@ -13,6 +15,90 @@ mydb = mysql.connector.connect(
     database="test"
 )
 mycursor = mydb.cursor()
+
+
+# decorators
+
+def login_check(f):
+    @wraps(f)
+    def decorated_function(*args, **kws):
+        if 'email' in session:
+            return redirect(url_for("test"))
+        else:
+            flash("Please Login", "info")
+            return render_template('login.html')
+    return decorated_function
+
+
+def login_check_R(f):
+    @wraps(f)
+    def decorated_function(*args, **kws):
+        if 'email' in session:
+            return render_template('test.html')
+        else:
+            return render_template('registration.html')
+
+    return decorated_function
+
+
+def admincheck(f):
+    @wraps(f)
+    def decorated_function(*args, **kws):
+        level = 'user'
+        if session['level'] == "admin":
+            level = session['level']
+            data = getdata()
+            pages = getpage(session["userid"])
+            return f(level, data, pages, *args, **kws)
+
+        else:
+            level = session['level']
+            data = getdata()
+            pages = getpage(session["userid"])
+            return f(level, data, pages, *args, **kws)
+    return decorated_function
+
+
+# function
+
+
+def getdata():
+    mydb = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="",
+        database="test"
+    )
+    mycursor = mydb.cursor()
+    mycursor.execute("select * from login")
+    # row_headers = [x[0] for x in mycursor.description]
+    r = mycursor.fetchall()
+    # json_data = []
+    # for result in r:
+    #     json_data.append(dict(zip(row_headers, result)))
+    # print(f"json: {json.dumps(json_data)}")
+    return r
+
+
+def getpage(id):
+    mydb = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="",
+        database="test"
+    )
+    mycursor = mydb.cursor()
+    mycursor.execute("select * from page_access where u_id='%d'" % id)
+    row_headers = [x[0] for x in mycursor.description]
+    r = mycursor.fetchall()
+    print(r)
+    json_data = []
+    for result in r:
+        json_data.append(dict(zip(row_headers, result)))
+    r = json.dumps(json_data)
+    res = json.loads(r)
+    res = res[0]
+    return res
 
 # login API
 
@@ -71,6 +157,12 @@ def user_register():
                 return render_template('registration.html')
             mycursor.execute(
                 "INSERT INTO login (name, email, password) VALUES (%s,%s,%s)", (name, email, password))
+            mydb.commit()
+            l_id = mycursor.lastrowid
+            print(l_id)
+            dev = 0
+            mycursor.execute(
+                "INSERT INTO `page_access`( `u_id`, `developer`) VALUES (%s,%s)", (l_id, dev))
             mydb.commit()
 
             flash("Registration success", "success")

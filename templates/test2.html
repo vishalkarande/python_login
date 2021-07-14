@@ -21,33 +21,58 @@
     </div>
     <ul class="list-unstyled components mb-5">
       <li class="active">
-        <a href="#"><span class="fa fa-home mr-3"></span> Home</a>
+        <a href="{{ url_for('test') }}"
+          ><span class="fa fa-home mr-3"></span> Home</a
+        >
       </li>
+      {% if pages["admin"] == 1 :%}
       <li>
-        <a href="#"
+        <a href="{{ url_for('admin') }}"
+          ><span class="fa fa-cog mr-3"></span> ADMIN</a
+        >
+      </li>
+      {% endif %} {% if pages["developer"]==1 : %}
+      <li>
+        <a href="{{ url_for('developer') }}"
           ><span class="fa fa-download mr-3 notif"
             ><small class="d-flex align-items-center justify-content-center"
               >5</small
             ></span
           >
-          Download</a
+          DEVELOPER
+        </a>
+      </li>
+      {% endif %} {% if pages["tester"] == 1 :%}
+      <li>
+        <a href="{{ url_for('tester') }}"
+          ><span class="fa fa-gift mr-3"></span> TESTER
+        </a>
+      </li>
+      {% endif %} {% if pages["quality"] == 1 :%}
+      <li>
+        <a href="{{ url_for('quality') }}"
+          ><span class="fa fa-trophy mr-3"></span> QUALITY ASSURANCE
+        </a>
+      </li>
+      {% endif %} {% if pages["contactus"] == 1 :%}
+      <li>
+        <a href="{{ url_for('contactus') }}"
+          ><span class="fa fa-support mr-3"></span> CONTACT US</a
         >
       </li>
+      {% endif %} {% if pages["helpdesk"] == 1 :%}
       <li>
-        <a href="#"><span class="fa fa-gift mr-3"></span> Gift Code</a>
+        <a href="{{ url_for('help') }}"
+          ><span class="fa fa-sign-out mr-3"></span> HELP DESK</a
+        >
       </li>
+      {% endif %}{% if pages["support"] == 1 :%}
       <li>
-        <a href="#"><span class="fa fa-trophy mr-3"></span> Top Review</a>
+        <a href="{{ url_for('support') }}"
+          ><span class="fa fa-sign-out mr-3"></span> SUPPORT</a
+        >
       </li>
-      <li>
-        <a href="#"><span class="fa fa-cog mr-3"></span> Settings</a>
-      </li>
-      <li>
-        <a href="#"><span class="fa fa-support mr-3"></span> Support</a>
-      </li>
-      <li>
-        <a href="#"><span class="fa fa-sign-out mr-3"></span> Sign Out</a>
-      </li>
+      {% endif %}
     </ul>
   </nav>
 

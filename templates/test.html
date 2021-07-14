@@ -1,14 +1,14 @@
 {% extends 'home.html' %} {% block title %} Home {% endblock %} {% block content
 %} {% include 'test2.html' %}
-
-<div class="container" style="margin-left: 5%; margin-right: 5%">
+<div class="container" style="margin-left: 5%; margin-right: 5% " >
   <h4 style="margin-top: 10px; color: royalblue">
     Hi {{ session['name'] }}, your access right is {{level}}
   </h4>
   <h6 style="margin-top: 10px; color: red">
     * only Admin can delete Users and Edit access level
   </h6>
-  <table class="table table-success table-striped">
+  <h1>Home page</h1>
+  <!-- <table class="table table-success table-striped">
     <thead>
       <tr>
         <th scope="col">ID</th>
@@ -72,7 +72,8 @@
       </tr>
       {% endfor %}
     </tbody>
-  </table>
+  </table> -->
 </section>
+</div>
 </div>
 {% endblock %}

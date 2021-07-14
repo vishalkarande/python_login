@@ -1,7 +1,9 @@
 from flask import Flask, render_template, url_for, session, request, flash, redirect
 import mysql.connector
 from functools import wraps
-from main import main
+from main import *
+import main as m
+
 
 app = Flask(__name__)
 app.register_blueprint(main, url_prefix="")
@@ -9,74 +11,64 @@ app.register_blueprint(main, url_prefix="")
 app.secret_key = "super secret key"
 
 
-def login_check(f):
-    @wraps(f)
-    def decorated_function(*args, **kws):
-        if 'email' in session:
-            return redirect(url_for("test"))
-        else:
-            flash("Please Login", "info")
-            return render_template('login.html')
-    return decorated_function
-
-
-def login_check_R(f):
-    @wraps(f)
-    def decorated_function(*args, **kws):
-        if 'email' in session:
-            return render_template('test.html')
-        else:
-            return render_template('registration.html')
-
-    return decorated_function
-
-
-def getdata():
-    mydb = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="",
-        database="test"
-    )
-    mycursor = mydb.cursor()
-    mycursor.execute("select * from login")
-    r = mycursor.fetchall()
-    return r
-
-
-def admincheck(f):
-    @wraps(f)
-    def decorated_function(*args, **kws):
-        print(session['level'])
-        level = 'user'
-        if session['level'] == "admin":
-            level = session['level']
-            data = getdata()
-            return f(level, data, *args, **kws)
-
-        else:
-            level = session['level']
-            data = getdata()
-            return f(level, data, *args, **kws)
-    return decorated_function
-
-
 @app.route('/')
-@login_check
+@m.login_check
 def login():
     return render_template('login.html')
 
 
 @app.route('/register')
-@login_check_R
+@m.login_check_R
 def register():
     return render_template('registration.html')
 
 
 @app.route('/test')
-@admincheck
-def test(level, data):
-    return render_template('test.html', level=level, data=data)
+@m.admincheck
+def test(level, data, pages):
+    return render_template('test.html', level=level, data=data, pages=pages)
+
+
+@app.route('/admin')
+@m.admincheck
+def admin(level, data, pages):
+    return render_template('admin.html', level=level, data=data, pages=pages)
+
+
+@app.route('/developer')
+@m.admincheck
+def developer(level, data, pages):
+    return render_template('developer.html', level=level, data=data, pages=pages)
+
+
+@app.route('/tester')
+@m.admincheck
+def tester(level, data, pages):
+    return render_template('tester.html', level=level, data=data, pages=pages)
+
+
+@app.route('/quality')
+@m.admincheck
+def quality(level, data, pages):
+    return render_template('quality.html', level=level, data=data, pages=pages)
+
+
+@app.route('/contactus')
+@m.admincheck
+def contactus(level, data, pages):
+    return render_template('contactus.html', level=level, data=data, pages=pages)
+
+
+@app.route('/help')
+@m.admincheck
+def help(level, data, pages):
+    return render_template('help.html', level=level, data=data, pages=pages)
+
+
+@app.route('/support')
+@m.admincheck
+def support(level, data, pages):
+    return render_template('support.html', level=level, data=data, pages=pages)
 
 
 if __name__ == '__main__':
