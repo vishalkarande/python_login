@@ -1,5 +1,6 @@
 {% extends 'home.html' %} {% block title %} Home {% endblock %} {% block content
 %} {% include 'test2.html' %}
+<br>
 <div class="container" style="margin-left: 5%; margin-right: 5% " >
   <h4 style="margin-top: 10px; color: royalblue">
     Hi {{ session['name'] }}, your access right is {{level}}
@@ -7,72 +8,28 @@
   <h6 style="margin-top: 10px; color: red">
     * only Admin can delete Users and Edit access level
   </h6>
-  <h1>Home page</h1>
-  <!-- <table class="table table-success table-striped">
-    <thead>
-      <tr>
-        <th scope="col">ID</th>
-        <th scope="col">First</th>
-        <th scope="col">Email</th>
-        <th scope="col">User Type</th>
-        <th scope="col">Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for your_list_element in data: %}
-      <tr>
-        <th scope="row">{{ your_list_element[0] }}</th>
-        <td>{{ your_list_element[1] }}</td>
-        <td>{{ your_list_element[2] }}</td>
-        <td>{{ your_list_element[4] }}</td>
-        <td>
-          {% if level == 'admin' or your_list_element[0]==session["userid"]: %}
-          {% if level == 'admin': %}
-          <form
-            method="post"
-            action="{{ url_for('main.delete', id=your_list_element[0]) }}"
-          >
-            <button style="width: 100px" class="btn btn-danger">Delete</button>
-          </form>
-          {% elif your_list_element[0]==session["userid"]: %}
-          <form
-            method="post"
-            action="{{ url_for('main.delete', id=your_list_element[0]) }}"
-          >
-            <button style="width: 100px" class="btn btn-danger" disabled>
-              Delete
-            </button>
-          </form>
-          {% endif %}
-          <form
-            method="post"
-            action="{{ url_for('main.edit', id=your_list_element[0]) }}"
-          >
-            <button style="width: 100px" class="btn btn-info">Edit</button>
-          </form>
-          {% else: %}
-          <form
-            method="post"
-            action="{{ url_for('main.delete', id=your_list_element[0]) }}"
-          >
-            <button style="width: 100px" disabled class="btn btn-danger">
-              Delete
-            </button>
-          </form>
-          <form
-            method="post"
-            action="{{ url_for('main.edit', id=your_list_element[0]) }}"
-          >
-            <button style="width: 100px" disabled class="btn btn-info">
-              Edit
-            </button>
-          </form>
-          {% endif %}
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table> -->
+  
+  <div id="content" class="p-4 p-md-5 pt-5">
+    <h2 class="mb-4">Home page Demo</h2>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+      eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+      minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+      aliquip ex ea commodo consequat. Duis aute irure dolor in
+      reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+      pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+      culpa qui officia deserunt mollit anim id est laborum.
+    </p>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+      eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+      minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+      aliquip ex ea commodo consequat. Duis aute irure dolor in
+      reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+      pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+      culpa qui officia deserunt mollit anim id est laborum.
+    </p>
+  </div>
 </section>
 </div>
 </div>

@@ -1,6 +1,7 @@
 {% extends 'home.html' %}
 {% block title %} Home {% endblock %}
 {% block content %}
+{% print(pages['admin']) %}
 
 <div class="container align-content-center text-center main-div">
     <div class="main-class shadow-lg p-3 mb-5 bg-body rounded">
@@ -26,6 +27,37 @@
             <input class="form-control username" disabled  value="{{ data[4] }}" required style="width: 100%;" type="text"
                 name="user" >
             {% endif %}
+            <br>
+            <h6>Page Access</h6>
+            <label for="staticEmail2" style="margin-top:30px;" class="lable">Admin</label>
+            <select class="form-select" name="admin" aria-label="Default select example">
+                <option value="{{ pages['admin'] }}" selected>{% if pages['admin']==1: %}Yes {% else : %} No {%endif%}</option>
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+              </select>
+
+              <label for="staticEmail2" style="margin-top:30px;" class="lable">  Developer</label>
+            <select class="form-select" name="developer" aria-label="Default select example">
+                <option value="{{ pages['developer'] }}" selected>{% if pages['developer']==1: %}Yes {% else : %} No {%endif%}</option>
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+              </select>
+
+              <label for="staticEmail2" style="margin-top:30px;" class="lable">Tester</label>
+            <select class="form-select" name="tester" aria-label="Default select example">
+                <option value="{{ pages['tester'] }}" selected>{% if pages['tester']==1: %}Yes {% else : %} No {%endif%}</option>
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+              </select>
+
+              <label for="staticEmail2" style="margin-top:30px;" class="lable">Quality Assurance</label>
+            <select class="form-select" name="quality" aria-label="Default select example">
+                <option value="{{ pages['quality'] }}" selected>{% if pages['quality']==1: %}Yes {% else : %} No {%endif%}</option>
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+              </select>
+            
+
             <input type="submit" class="login btn-success w-20 " style="margin-top:30px;" value="UPDATE">
            <a href="{{url_for('test')}}"><input type="button" class="register btn-info" value="CANCEL"></a>
         </div>

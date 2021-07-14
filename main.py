@@ -179,8 +179,11 @@ def delete(id):
         mycursor.execute(
             "DELETE FROM `login` WHERE id='%d'" % id)
         mydb.commit()
+        mycursor.execute(
+            "DELETE FROM `page_access` WHERE u_id='%d'" % id)
+        mydb.commit()
         flash("Data Deleted", "danger")
-        return redirect(url_for("test"))
+        return redirect(url_for("admin"))
     except Exception as error:
         print(error)
         flash("Error Occoured,please try later", "danger")
@@ -191,8 +194,20 @@ def delete(id):
 def edit(id):
     mycursor.execute("select * from login where id='%d'" % id)
     r = mycursor.fetchall()
-    print(r[0])
-    return render_template('edit.html', data=r[0])
+
+    mycursor.execute("select * from page_access where u_id='%d'" % id)
+    row_headers = [x[0] for x in mycursor.description]
+    pages = mycursor.fetchall()
+    print(r)
+    json_data = []
+    for result in pages:
+        json_data.append(dict(zip(row_headers, result)))
+    pages = json.dumps(json_data)
+    res = json.loads(pages)
+    res = res[0]
+
+    print(res)
+    return render_template('edit.html', data=r[0], pages=res)
 
 
 @main.route('/update', methods=['POST', 'GET'])
@@ -203,9 +218,18 @@ def update():
             name = request.form['name']
             email = request.form['email']
             user = request.form['user']
+            admin = request.form['admin']
+            developer = request.form['developer']
+            tester = request.form['tester']
+            quality = request.form['quality']
+            print(admin)
             mycursor.execute(
                 "UPDATE login SET name=%s,email=%s,type=%s WHERE id=%s", (name, email, user, id))
             mydb.commit()
+            mycursor.execute(
+                "UPDATE page_access SET admin=%s,developer=%s,tester=%s,quality=%s WHERE u_id=%s", (admin, developer, tester, quality, id))
+            mydb.commit()
+
             flash("Updated Successfully", "success")
             return redirect(url_for("test"))
         except Exception as error:

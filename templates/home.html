@@ -15,7 +15,10 @@
       type="text/css"
       href="{{ url_for('static',filename='styles/main.css') }}"
     />
-
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"
+      rel="stylesheet"
+    />
     <link
       rel="stylesheet"
       type="text/css"
@@ -52,7 +55,7 @@
         <nav class="navbar navbar-dark bg-dark">
           <button
             class="navbar-toggler"
-            style="margin-left: 20px"
+            style="margin-left: 20px; background-color: aliceblue"
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#navbarToggleExternalContent"
@@ -60,7 +63,7 @@
             aria-expanded="false"
             aria-label="Toggle navigation"
           >
-            <span class="navbar-toggler-icon"></span>
+            <span class="fas fa-chevron-down dropdown-icon"></span>
           </button>
           {% if session['email']: %}
           <p style="float: right; color: aliceblue; margin-right: 5%">
