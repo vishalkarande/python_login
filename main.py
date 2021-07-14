@@ -18,6 +18,7 @@ mycursor = mydb.cursor()
 
 
 # decorators
+# login Check
 
 def login_check(f):
     @wraps(f)
@@ -28,6 +29,8 @@ def login_check(f):
             flash("Please Login", "info")
             return render_template('login.html')
     return decorated_function
+
+# login Check Registration page
 
 
 def login_check_R(f):
@@ -40,6 +43,8 @@ def login_check_R(f):
 
     return decorated_function
 
+
+# Admin Check
 
 def admincheck(f):
     @wraps(f)
@@ -59,8 +64,9 @@ def admincheck(f):
     return decorated_function
 
 
-# function
+# functions
 
+# Get User Data
 
 def getdata():
     mydb = mysql.connector.connect(
@@ -71,13 +77,10 @@ def getdata():
     )
     mycursor = mydb.cursor()
     mycursor.execute("select * from login")
-    # row_headers = [x[0] for x in mycursor.description]
     r = mycursor.fetchall()
-    # json_data = []
-    # for result in r:
-    #     json_data.append(dict(zip(row_headers, result)))
-    # print(f"json: {json.dumps(json_data)}")
     return r
+
+# Get page Data
 
 
 def getpage(id):
@@ -99,6 +102,8 @@ def getpage(id):
     res = json.loads(r)
     res = res[0]
     return res
+
+# Api
 
 # login API
 
@@ -141,6 +146,7 @@ def result():
         flash("Error Occoured, Check Id and Password", "danger")
         return render_template('login.html')
 
+
 # registration API
 
 
@@ -172,13 +178,16 @@ def user_register():
             return render_template('registration.html')
 
 
+# Delete User data and Page records
+
 @main.route('/delete/<int:id>', methods=['POST', 'GET'])
 def delete(id):
     try:
-        print(type(id))
+        # Delete User Records
         mycursor.execute(
             "DELETE FROM `login` WHERE id='%d'" % id)
         mydb.commit()
+        # Delete Page Access Records for User
         mycursor.execute(
             "DELETE FROM `page_access` WHERE u_id='%d'" % id)
         mydb.commit()
@@ -190,15 +199,19 @@ def delete(id):
         return redirect(url_for("test"))
 
 
+# Edit page Route
+
 @main.route('/edit/<int:id>', methods=['POST', 'GET'])
 def edit(id):
+    # Get User record by ID
     mycursor.execute("select * from login where id='%d'" % id)
     r = mycursor.fetchall()
 
+    # Get User Pages record by "u_id"
     mycursor.execute("select * from page_access where u_id='%d'" % id)
     row_headers = [x[0] for x in mycursor.description]
     pages = mycursor.fetchall()
-    print(r)
+    # Getting data in json format
     json_data = []
     for result in pages:
         json_data.append(dict(zip(row_headers, result)))
@@ -209,6 +222,8 @@ def edit(id):
     print(res)
     return render_template('edit.html', data=r[0], pages=res)
 
+
+# Update User Details and Page Access
 
 @main.route('/update', methods=['POST', 'GET'])
 def update():
@@ -222,10 +237,11 @@ def update():
             developer = request.form['developer']
             tester = request.form['tester']
             quality = request.form['quality']
-            print(admin)
+            # Update User Records
             mycursor.execute(
                 "UPDATE login SET name=%s,email=%s,type=%s WHERE id=%s", (name, email, user, id))
             mydb.commit()
+            # Update User Access pages Records
             mycursor.execute(
                 "UPDATE page_access SET admin=%s,developer=%s,tester=%s,quality=%s WHERE u_id=%s", (admin, developer, tester, quality, id))
             mydb.commit()
@@ -236,6 +252,7 @@ def update():
             print(error)
             flash("Error Occoured,please try later", "danger")
             return redirect(url_for("test"))
+
 
 # logout API
 @main.route('/logout', methods=['POST', 'GET'])
