@@ -226,28 +226,31 @@ def delete(id):
 # Edit page Route
 
 @main.route('/edit/<int:id>', methods=['POST', 'GET'])
-@editadmincheck
 def edit(id):
-    # Get User record by ID
-    mycursor.execute("select * from login where id='%d'" % id)
-    r = mycursor.fetchall()
-    val = r[0]
-    print(session)
+    if 'email' in session and session['level'] == "admin":
+        # Get User record by ID
+        mycursor.execute("select * from login where id='%d'" % id)
+        r = mycursor.fetchall()
+        val = r[0]
+        print(session)
 
-    # Get User Pages record by "u_id"
-    mycursor.execute("select * from page_access where u_id='%d'" % id)
-    row_headers = [x[0] for x in mycursor.description]
-    pages = mycursor.fetchall()
-    # Getting data in json format
-    json_data = []
-    for result in pages:
-        json_data.append(dict(zip(row_headers, result)))
-    pages = json.dumps(json_data)
-    res = json.loads(pages)
-    res = res[0]
+        # Get User Pages record by "u_id"
+        mycursor.execute("select * from page_access where u_id='%d'" % id)
+        row_headers = [x[0] for x in mycursor.description]
+        pages = mycursor.fetchall()
+        # Getting data in json format
+        json_data = []
+        for result in pages:
+            json_data.append(dict(zip(row_headers, result)))
+        pages = json.dumps(json_data)
+        res = json.loads(pages)
+        res = res[0]
 
-    print(res)
-    return render_template('edit.html', data=r[0], pages=res)
+        print(res)
+        return render_template('edit.html', data=r[0], pages=res)
+    else:
+        flash("Admin Login Required", "danger")
+        return redirect(url_for("test"))
 
 
 # Update User Details and Page Access
