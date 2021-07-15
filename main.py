@@ -49,24 +49,45 @@ def login_check_R(f):
 def admincheck(f):
     @wraps(f)
     def decorated_function(*args, **kws):
-        level = 'user'
-        if session['level'] == "admin":
-            level = session['level']
-            data = getdata()
-            pages = getpage(session["userid"])
-            return f(level, data, pages, *args, **kws)
+        if 'email' in session:
+            level = 'user'
+            if session['level'] == "admin":
+                level = session['level']
+                data = getdata()
+                pages = getpage(session["userid"])
+                return f(level, data, pages, *args, **kws)
 
+            else:
+                level = session['level']
+                data = getdata()
+                pages = getpage(session["userid"])
+                return f(level, data, pages, *args, **kws)
         else:
-            level = session['level']
-            data = getdata()
-            pages = getpage(session["userid"])
-            return f(level, data, pages, *args, **kws)
+            flash("Please Login", "info")
+            return render_template('login.html')
     return decorated_function
 
+
+def editadmincheck(f):
+    @wraps(f)
+    def decorated_function(*args, **kws):
+        level = 'user'
+        print("hello")
+        if 'level' in session and session['level'] == "admin":
+            level = session['level']
+            data = getdata()
+            pages = getpage(session["userid"])
+            return f(level, data, pages, *args, **kws)
+        else:
+            print("Second hello")
+            flash("Admin Access required", "danger")
+            return redirect(url_for("test"))
+    return decorated_function
 
 # functions
 
 # Get User Data
+
 
 def getdata():
     mydb = mysql.connector.connect(
@@ -94,7 +115,6 @@ def getpage(id):
     mycursor.execute("select * from page_access where u_id='%d'" % id)
     row_headers = [x[0] for x in mycursor.description]
     r = mycursor.fetchall()
-    print(r)
     json_data = []
     for result in r:
         json_data.append(dict(zip(row_headers, result)))
@@ -183,16 +203,20 @@ def user_register():
 @main.route('/delete/<int:id>', methods=['POST', 'GET'])
 def delete(id):
     try:
-        # Delete User Records
-        mycursor.execute(
-            "DELETE FROM `login` WHERE id='%d'" % id)
-        mydb.commit()
-        # Delete Page Access Records for User
-        mycursor.execute(
-            "DELETE FROM `page_access` WHERE u_id='%d'" % id)
-        mydb.commit()
-        flash("Data Deleted", "danger")
-        return redirect(url_for("admin"))
+        if 'email' in session and session['level'] == "admin":
+            # Delete User Records
+            mycursor.execute(
+                "DELETE FROM `login` WHERE id='%d'" % id)
+            mydb.commit()
+            # Delete Page Access Records for User
+            mycursor.execute(
+                "DELETE FROM `page_access` WHERE u_id='%d'" % id)
+            mydb.commit()
+            flash("Data Deleted", "danger")
+            return redirect(url_for("admin"))
+        else:
+            flash("Admin Login Required", "danger")
+            return redirect(url_for("test"))
     except Exception as error:
         print(error)
         flash("Error Occoured,please try later", "danger")
@@ -202,10 +226,13 @@ def delete(id):
 # Edit page Route
 
 @main.route('/edit/<int:id>', methods=['POST', 'GET'])
+@editadmincheck
 def edit(id):
     # Get User record by ID
     mycursor.execute("select * from login where id='%d'" % id)
     r = mycursor.fetchall()
+    val = r[0]
+    print(session)
 
     # Get User Pages record by "u_id"
     mycursor.execute("select * from page_access where u_id='%d'" % id)
